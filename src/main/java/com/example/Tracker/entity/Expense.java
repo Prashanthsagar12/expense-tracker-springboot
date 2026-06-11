@@ -1,7 +1,7 @@
 package com.example.Tracker.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
-
+import jakarta.validation.constraints.NotBlank;
 @Entity
 @Table(name = "expenses")
 public class Expense {
@@ -10,6 +10,7 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Title cannot be empty")
     private String title;
 
     private Double amount;
