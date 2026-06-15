@@ -2,6 +2,7 @@ package com.example.Tracker.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 @Entity
 @Table(name = "expenses")
 public class Expense {
@@ -13,8 +14,10 @@ public class Expense {
     @NotBlank(message = "Title cannot be empty")
     private String title;
 
+    @Positive(message = "Amount must be greater than 0")
     private Double amount;
 
+    @NotBlank(message = "Category cannot be empty")
     private String category;
 
     private LocalDate date;

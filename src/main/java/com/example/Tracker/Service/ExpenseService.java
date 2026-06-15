@@ -5,8 +5,10 @@ import com.example.Tracker.exception.ResourceNotFoundException;
 import com.example.Tracker.repository.ExpenseRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -16,6 +18,11 @@ public class ExpenseService {
     private ExpenseRepository expenseRepository;
 
     public Expense saveExpense(Expense expense) {
+
+        if (expense.getDate() == null) {
+            expense.setDate(LocalDate.now());
+        }
+
         return expenseRepository.save(expense);
     }
 
@@ -56,4 +63,39 @@ public class ExpenseService {
         return expenseRepository.findByCategory(category);
 
     }
+    public List<Expense> getExpensesByDate(LocalDate date) {
+        return expenseRepository.findByDate(date);
+    }
+
+    public List<Expense> getExpensesByAmountRange(
+            Double min,
+            Double max) {
+
+        return expenseRepository.findByAmountBetween(min, max);
+    }
+    public Double getTotalExpenses() {
+        return expenseRepository.getTotalExpenses();
+    }
+
+    public Double getTotalExpensesByMonth(int month) {
+        return expenseRepository.getTotalExpensesByMonth(month);
+    }
+
+    public Long getExpenseCount() {
+        return expenseRepository.getExpenseCount();
+    }
+
+    public List<Expense> getExpensesSortedByAmount() {
+        return expenseRepository.findAllByOrderByAmountDesc();
+    }
+
+    public Page<Expense> getExpensesWithPagination(
+            Pageable pageable) {
+
+        return expenseRepository.findAll(pageable);
+    }
+    public List<Expense> searchExpensesByTitle(String title) {
+        return expenseRepository.findByTitleContainingIgnoreCase(title);
+    }
+
 }
