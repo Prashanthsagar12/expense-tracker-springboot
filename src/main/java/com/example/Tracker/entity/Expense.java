@@ -1,8 +1,11 @@
 package com.example.Tracker.entity;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+
 @Entity
 @Table(name = "expenses")
 public class Expense {
@@ -21,6 +24,18 @@ public class Expense {
     private String category;
 
     private LocalDate date;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     public Expense() {
     }
@@ -64,4 +79,6 @@ public class Expense {
     public void setDate(LocalDate date) {
         this.date = date;
     }
+
+
 }
