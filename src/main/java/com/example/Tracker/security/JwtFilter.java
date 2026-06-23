@@ -33,44 +33,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
         System.out.println("AUTH HEADER = " + authHeader);
 
-//        if (authHeader != null
-//                && authHeader.startsWith("Bearer ")) {
-//
-//            String token =
-//                    authHeader.substring(7);
-//
-//            boolean valid =
-//                    jwtUtil.validateToken(token);
-//            System.out.println("JWT FILTER EXECUTED");
-//            System.out.println("AUTH HEADER = " + authHeader);
-//
-//            if (!valid) {
-//
-//                response.setStatus(
-//                        HttpServletResponse.SC_UNAUTHORIZED);
-//
-//                response.getWriter()
-//                        .write("Invalid JWT Token");
-//
-//                return;
-//            }
-//
-//            String username =
-//                    jwtUtil.extractUsername(token);
-//
-//            UsernamePasswordAuthenticationToken authentication =
-//                    new UsernamePasswordAuthenticationToken(
-//                            username,
-//                            null,
-//                            java.util.Collections.emptyList());
-//
-//            SecurityContextHolder
-//                    .getContext()
-//                    .setAuthentication(authentication);
-//        }
-//        filterChain.doFilter(request, response);
-//    }
-//}
         if (authHeader != null
                 && authHeader.startsWith("Bearer ")) {
 
@@ -102,11 +64,19 @@ public class JwtFilter extends OncePerRequestFilter {
 
             System.out.println("USERNAME = " + username);
 
+                           java.util.Collections.emptyList();
+
+            String role =
+                    jwtUtil.extractRole(token);
+
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(
                             username,
                             null,
-                            java.util.Collections.emptyList());
+                            java.util.List.of(
+                                    new org.springframework.security.core.authority
+                                            .SimpleGrantedAuthority(
+                                            "ROLE_" + role)));
 
             SecurityContextHolder
                     .getContext()

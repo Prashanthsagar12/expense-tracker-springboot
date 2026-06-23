@@ -170,4 +170,19 @@ public class ExpenseController {
     public Map<LocalDate,Double> getDailySummary(){
             return expenseService.getDailyExpenseSummary();
         }
+
+    @GetMapping("/monthly-total")
+    public Double getMonthlyTotal(
+            @RequestParam int month) {
+
+        return expenseService
+                .getTotalExpensesByMonth(month);
+    }
+
+    @GetMapping("/monthly-summary")
+    public Map<String, Double> getMonthlySummary() {
+
+        return expenseService
+                .getMonthlySummary();
+    }
     }

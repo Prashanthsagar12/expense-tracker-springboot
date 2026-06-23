@@ -39,6 +39,8 @@ public class UserService {
                 passwordEncoder.encode(
                         user.getPassword()));
 
+        user.setRole("USER");
+
         return userRepository.save(user);
     }
 
@@ -58,7 +60,7 @@ public class UserService {
         }
 
         String token =
-                jwtUtil.generateToken(user.getUsername());
+                jwtUtil.generateToken(user.getUsername(),user.getRole());
 
         return new LoginResponse(token);
     }

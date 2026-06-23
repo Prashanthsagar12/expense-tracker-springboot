@@ -17,10 +17,11 @@ public class JwtUtil {
                     "mysecretkeymysecretkeymysecretkey12345"
                             .getBytes());
 
-    public String generateToken(String username) {
+    public String generateToken(String username, String role) {
 
         return Jwts.builder()
                 .subject(username)
+                .claim("role", role)
                 .issuedAt(new Date())
                 .expiration(
                         new Date(
@@ -57,6 +58,15 @@ public class JwtUtil {
             return false;
         }
 
+    }
+    public String extractRole(String token){
 
+        Claims claims = Jwts.parser()
+                .verifyWith(SECRET_KEY)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return (String) claims.get("role");
     }
 }

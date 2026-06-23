@@ -206,10 +206,6 @@ public class ExpenseService {
         return dashboard;
     }
 
-    public Double getTotalExpensesByMonth(int month) {
-        return expenseRepository.getTotalExpensesByMonth(month);
-    }
-
     public Map<LocalDate, Double> getDailyExpenseSummary() {
         String username =
                 SecurityContextHolder
@@ -225,6 +221,58 @@ public class ExpenseService {
             Double total = ((Number) row[1]).doubleValue();
 
             summary.put(date, total);
+        }
+
+        return summary;
+    }
+
+    public Double getTotalExpensesByMonth(int month) {
+
+        String username =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getName();
+
+        return expenseRepository
+                .getTotalExpensesByMonth(
+                        username,
+                        month);
+    }
+
+
+
+    public Map<String, Double> getMonthlySummary() {
+
+        String username =
+                SecurityContextHolder
+                        .getContext()
+                        .getAuthentication()
+                        .getName();
+
+        List<Object[]> results =
+                expenseRepository
+                        .getMonthlySummary(username);
+
+        Map<String, Double> summary =
+                new LinkedHashMap<>();
+
+        for (Object[] row : results) {
+
+            Integer monthNumber =
+                    ((Number) row[0]).intValue();
+
+            String monthName =
+                    java.time.Month
+                            .of(monthNumber)
+                            .getDisplayName(
+                                    java.time.format.TextStyle.FULL,
+                                    java.util.Locale.ENGLISH);
+
+            Double total =
+                    ((Number) row[1]).doubleValue();
+
+            summary.put(monthName, total);
         }
 
         return summary;

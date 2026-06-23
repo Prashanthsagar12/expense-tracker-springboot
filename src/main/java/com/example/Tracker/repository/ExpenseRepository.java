@@ -22,8 +22,15 @@ List<Expense> getExpenseById(int id);
        WHERE e.user.username = :username
        """)
     Double getTotalExpenses(String username);
-    @Query("SELECT SUM(e.amount) FROM Expense e WHERE MONTH(e.date) = :month")
-    Double getTotalExpensesByMonth(int month);
+    @Query("""
+       SELECT COALESCE(SUM(e.amount),0)
+       FROM Expense e
+       WHERE e.user.username = :username
+       AND MONTH(e.date) = :month
+       """)
+    Double getTotalExpensesByMonth(
+            String username,
+            int month);
     @Query("""
        SELECT COUNT(e)
        FROM Expense e
@@ -80,6 +87,17 @@ List<Expense> getExpenseById(int id);
        ORDER BY e.date
        """)
     List<Object[]> getdailyExpenseSummary(String username);
+
+
+
+    @Query("""
+       SELECT MONTH(e.date), SUM(e.amount)
+       FROM Expense e
+       WHERE e.user.username = :username
+       GROUP BY MONTH(e.date)
+       ORDER BY MONTH(e.date)
+       """)
+    List<Object[]> getMonthlySummary(String username);
 
 
 }
