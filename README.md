@@ -163,5 +163,3 @@ http://localhost:8080
 * Cloud Deployment
 * Category-wise Budgets
 * Frontend Integration
-
-Chinthala Prashanth Sagar
