@@ -25,6 +25,7 @@ public class AuthController {
     @PostMapping("/login")
     public LoginResponse loginUser(
             @RequestBody LoginRequest request) {
+        System.out.println("LOGIN API HIT");
 
         return userService.loginUser(request);
     }
