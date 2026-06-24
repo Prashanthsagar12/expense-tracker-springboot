@@ -29,4 +29,15 @@ public class AuthController {
 
         return userService.loginUser(request);
     }
+
+
+    @RestController
+    @RequestMapping("/auth")
+    public class TestController {
+
+        @GetMapping("/test")
+        public String test() {
+            return "Auth endpoint working";
+        }
+    }
 }
